@@ -194,6 +194,12 @@ $fn = new custom_functions;
                         <span>Check Fake Jobs</span>
                     </a>
                 </li>
+                <li class="treeview">
+                    <a href="payments.php">
+                    <i class="fa fa-money"></i>
+                        <span>payments</span>
+                    </a>
+                </li>
              
              
             </section>
