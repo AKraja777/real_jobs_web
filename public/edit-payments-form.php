@@ -71,10 +71,20 @@ if (isset($_POST['btnCancel'])) { ?>
                 </div>
                 <form id="edit_payments_form" method="post" enctype="multipart/form-data">
                     <div class="box-body">
-                        <br>
-                        <div class="row">
+                     <div class="row">
+                     <div class="form-group col-md-4">
+                                  <div class="form-group">
+                                <label for="">Image</label>
+                                   <?php
+                                if (!empty($res[0]['image'])) {
+                                  $image_url = DOMAIN_URL . 'upload/image/' . $res[0]['image'];
+                                  echo '<p class="help-block"><img src="' . $image_url . '" style="max-width:100%" /></p>';
+                                    }
+                                      ?>
+                            </div>
+                                </div>
                             <div class="form-group">
-                                <div class="col-md-8">
+                                <div class="col-md-4">
                                     <label class="control-label">Payment Status</label> <i class="text-danger asterik">*</i><br>
                                     <div id="status" class="btn-group">
                                         <label class="btn btn-warning" data-toggle-class="btn-default" data-toggle-passive-class="btn-default">
@@ -84,11 +94,8 @@ if (isset($_POST['btnCancel'])) { ?>
                                             <input type="radio" name="payment_status" value="1" <?= ($res[0]['payment_status'] == 1) ? 'checked' : ''; ?>> Success
                                         </label>
                                     </div>
-
                                 </div>
                             </div>
-                        </div>
-
                     </div><!-- /.box-body -->
 
                     <div class="box-footer">

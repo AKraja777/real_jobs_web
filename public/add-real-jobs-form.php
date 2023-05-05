@@ -29,46 +29,67 @@ if (isset($_POST['btnAdd'])) {
         if (empty($income)) {
             $error['income'] = " <span class='label label-danger'>Required!</span>";
         }
+        if (empty($_FILES['image']['name'])) {
+            $error['image'] = " <span class='label label-danger'>Required!</span>";
+        }
        
 
 
         if ( !empty($company_name)  && !empty($title) && !empty($description) && !empty($income))
         {
-                $sql_query = "INSERT INTO real_jobs (company_name,title,description,income)VALUES('$company_name','$title','$description','$income')";
-                $db->sql($sql_query);
-                $result = $db->getResult();
-                if (!empty($result)) {
-                    $result = 0;
-                } else {
-                    $result = 1;
+            if (isset($_FILES['image']) && !empty($_FILES['image']) && $_FILES['image']['error'] == 0 && $_FILES['image']['size'] > 0) {
+                if (!is_dir('../upload/image/')) {
+                    mkdir('../upload/image/', 0777, true);
                 }
-                if ($result == 1) {
-                    $sql = "SELECT id FROM real_jobs ORDER BY id DESC LIMIT 1";
-                    $db->sql($sql);
-                    $res = $db->getResult();
-                    $real_jobs_id = $res[0]['id'];
-                    for ($i = 0; $i < count($_POST['job_details']); $i++) {
-                        
-                        // $thidhi = $db->escapeString(($_POST['thidhi'][$i]));
-                        $job_details = $db->escapeString(($_POST['job_details'][$i]));
-                        $sql = "INSERT INTO real_jobs_variant (real_jobs_id,job_details) VALUES('$real_jobs_id','$job_details')";
-                        $db->sql($sql);
-                        $abdhikam_variant_result = $db->getResult();
-                    }
-                    if (!empty($real_jobs_variant_result)) {
-                        $real_jobs_variant_result = 0;
+                $image = $db->escapeString($fn->xss_clean($_FILES['image']['name']));
+                $extension = pathinfo($_FILES["image"]["name"], PATHINFO_EXTENSION);
+                $result = $fn->validate_image($_FILES["image"]);
+                if (!$result) {
+                    $error['image'] = " <span class='label label-danger'>Image type must be jpg, jpeg, gif, or png!</span>";
+                } else {
+                    $image_name = microtime(true) . '.' . strtolower($extension);
+                    $full_path = '../upload/image/' . $image_name;
+                    $upload_image2 = 'upload/image/' . $image_name;
+                    if (!move_uploaded_file($_FILES["image"]["tmp_name"], $full_path)) {
+                        $error['image'] = " <span class='label label-danger'>Invalid directory to upload image!</span>";
                     } else {
-                        $real_jobs_variant_result = 1;
+                        $sql_query = "INSERT INTO real_jobs (company_name,title,description,income,image)VALUES('$company_name','$title','$description','$income','$upload_image2')";
+                        $db->sql($sql_query);
+                        $result = $db->getResult();
+                        if (!empty($result)) {
+                            $result = 0;
+                        } else {
+                            $result = 1;
+                        }
+                        if ($result == 1) {
+                            $sql = "SELECT id FROM real_jobs ORDER BY id DESC LIMIT 1";
+                            $db->sql($sql);
+                            $res = $db->getResult();
+                            $real_jobs_id = $res[0]['id'];
+                            if (is_array($_POST['job_details'])) {
+                                for ($i = 0; $i < count($_POST['job_details']); $i++) {
+                                    $job_details = $db->escapeString(($_POST['job_details'][$i]));
+                                    $sql = "INSERT INTO real_jobs_variant (real_jobs_id,job_details) VALUES('$real_jobs_id','$job_details')";
+                                    $db->sql($sql);
+                                    $real_jobs_variant_result = $db->getResult();
+                                }
+                                if (!empty($real_jobs_variant_result)) {
+                                    $real_jobs_variant_result = 0;
+                                } else {
+                                    $real_jobs_variant_result = 1;
+                                }
+                            }
+                            $error['add_real_jobs'] = "<section class='content-header'>
+                                                            <span class='label label-success'>real_jobs Added Successfully</span> </section>";
+                        } else {
+                            $error['add_real_jobs'] = " <span class='label label-danger'>Failed</span>";
+                        }
                     }
-                    
-                    $error['add_real_jobs'] = "<section class='content-header'>
-                                                    <span class='label label-success'>real_jobs Added Successfully</span> </section>";
-                } else {
-                    $error['add_real_jobs'] = " <span class='label label-danger'>Failed</span>";
                 }
-                }
-                
             }
+        }
+    }        
+            
 ?>
 <section class="content-header">
     <h1>Add New Jobs <small><a href='real-jobs.php'> <i class='fa fa-angle-double-left'></i>&nbsp;&nbsp;&nbsp;Back to Jobs</a></small></h1>
@@ -132,6 +153,12 @@ if (isset($_POST['btnAdd'])) {
                                         <a class="add_packate_variation" title="Add variation of real jobs" style="cursor: pointer;color:white;"><button class="btn btn-warning">Add More</button></a>
                                     </div>
                                     <div id="variations">
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <div class="form-group">
+                                        <label for="">Image</label>
+                                        <input type="file" class="form-control" name="image"  required>
                                     </div>
                                 </div>
                         </div>

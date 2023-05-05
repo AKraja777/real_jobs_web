@@ -12,31 +12,28 @@ include_once('../includes/crud.php');
 $db = new Database();
 $db->connect();
 
+if (empty($_POST['user_id'])) {
+    $response['success'] = false;
+    $response['message'] = "User ID is empty";
+    print_r(json_encode($response));
+    return false;
+}
+$user_id = $db->escapeString($_POST['user_id']);
 
-$sql = "SELECT * FROM `real_jobs`";
+$sql = "SELECT * FROM payments WHERE id = '$user_id'";
 $db->sql($sql);
 $res = $db->getResult();
 $num = $db->numRows($res);
 if($num>=1){
         $rows = array();
-        $temp = array();
         foreach ($res as $row) {
-            $id = $row['id'];
             $temp['id'] = $row['id'];
-            $temp['company_name'] = $row['company_name'];
-            $temp['title'] = $row['title'];
-            $temp['description'] = $row['description'];
-            $temp['income'] = $row['income'];
-            $temp['image'] = $row['image'];
- 
-            $sql = "SELECT * FROM `real_jobs_variant` WHERE real_jobs_id = '$id'";
-            $db->sql($sql);
+            $temp['payment_status'] = $row['payment_status'];
             $res = $db->getResult();
-            $temp['real_jobs_variant'] = $res;
             $rows[] = $temp;
         }
         $response['success'] = true;
-        $response['message'] = "Real Jobs Listed Successfully";
+        $response['message'] = "payment status Listed Successfully";
         $response['data'] = $rows;
         print_r(json_encode($response));
 }

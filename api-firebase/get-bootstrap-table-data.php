@@ -156,6 +156,7 @@ if (isset($_GET['table']) && $_GET['table'] == 'real_jobs') {
         $tempRow['title'] = $row['title'];
         $tempRow['description'] = $row['description'];
         $tempRow['income'] = $row['income'];
+        $tempRow['image'] = "<a href='" . $row['image'] . "' target='_blank'><img src='" . $row['image'] . "' height='50' /></a>";
         $tempRow['operate'] = $operate;
 
         $rows[] = $tempRow;
@@ -299,11 +300,11 @@ if (isset($_GET['table']) && $_GET['table'] == 'fake_jobs') {
                 $sort = $db->escapeString($fn->xss_clean($_GET['sort']));
             if (isset($_GET['order']))
                 $order = $db->escapeString($fn->xss_clean($_GET['order']));
-        
-            if (isset($_GET['search']) && !empty($_GET['search'])) {
-                $search = $db->escapeString($fn->xss_clean($_GET['search']));
-                $where .= "AND s.name like '%" . $search . "%' OR l.reason like '%" . $search . "%' OR l.id like '%" . $search . "%'  OR l.date like '%" . $search . "%' OR s.mobile like '%" . $search . "%' ";
-            }
+             
+                if (isset($_GET['search']) && !empty($_GET['search'])) {
+                    $search = $db->escapeString($fn->xss_clean($_GET['search']));
+                    $where = "WHERE u.name LIKE '%" . $search . "%' OR u.mobile LIKE '%" . $search . "%' OR u.email LIKE '%" . $search . "%' OR u.password LIKE '%" . $search . "%' OR u.skills LIKE '%" . $search . "%' OR u.place LIKE '%" . $search . "%'";
+                } 
             if (isset($_GET['sort'])) {
                 $sort = $db->escapeString($_GET['sort']);
             }
@@ -319,7 +320,7 @@ if (isset($_GET['table']) && $_GET['table'] == 'fake_jobs') {
             foreach ($res as $row)
                 $total = $row['total'];
            
-             $sql = "SELECT l.id AS id,l.*,u.name,u.mobile,l.payment_status AS status FROM `payments` l " . $join . " ORDER BY $sort $order LIMIT $offset, $limit";
+             $sql = "SELECT l.id AS id,l.*,u.name,u.mobile,l.payment_status AS status ,l.image AS image FROM `payments` l " . $join . " ORDER BY $sort $order LIMIT $offset, $limit";
              $db->sql($sql);
              $res = $db->getResult();
 
@@ -335,6 +336,7 @@ if (isset($_GET['table']) && $_GET['table'] == 'fake_jobs') {
                 $tempRow['id'] = $row['id'];
                 $tempRow['name'] = $row['name'];
                 $tempRow['mobile'] = $row['mobile'];
+                $tempRow['image'] = "<a href='" . $row['image'] . "' target='_blank'><img src='" . $row['image'] . "' height='50' /></a>";
                 if($row['payment_status']==1)
         $tempRow['payment_status'] ="<p class='text text-success'>Success</p>";
     else
