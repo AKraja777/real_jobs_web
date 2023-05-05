@@ -18,30 +18,28 @@ if (empty($_POST['user_id'])) {
     print_r(json_encode($response));
     return false;
 }
+
 $user_id = $db->escapeString($_POST['user_id']);
 
-$sql = "SELECT * FROM payments WHERE id = '$user_id'";
+$sql = "SELECT * FROM payments WHERE user_id = '$user_id'";
 $db->sql($sql);
 $res = $db->getResult();
 $num = $db->numRows($res);
-if($num>=1){
-        $rows = array();
-        foreach ($res as $row) {
-            $temp['id'] = $row['id'];
-            $temp['payment_status'] = $row['payment_status'];
-            $res = $db->getResult();
-            $rows[] = $temp;
-        }
-        $response['success'] = true;
-        $response['message'] = "payment status Listed Successfully";
-        $response['data'] = $rows;
-        print_r(json_encode($response));
-}
-else{
+
+if ($num >= 1) {
+    $rows = array();
+    foreach ($res as $row) {
+        $temp['id'] = $row['id'];
+        $temp['payment_status'] = $row['payment_status'];
+        $rows[] = $temp;
+    }
+    $response['success'] = true;
+    $response['message'] = "Payment status listed successfully";
+    $response['data'] = $rows;
+    print_r(json_encode($response));
+} else {
     $response['success'] = false;
-    $response['message'] = "Data Not Found";
+    $response['message'] = "Data not found";
     print_r(json_encode($response));
 }
-
-
 ?>
