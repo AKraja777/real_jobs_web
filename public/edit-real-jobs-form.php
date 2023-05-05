@@ -14,34 +14,56 @@ if (isset($_GET['id'])) {
     exit(0);
 }
 if (isset($_POST['btnEdit'])) {
-
-            $company_name = $db->escapeString(($_POST['company_name']));
-            $title = $db->escapeString(($_POST['title']));
-            $description = $db->escapeString(($_POST['description']));
-            $income = $db->escapeString(($_POST['income']));
-            $error = array();
-
-     if (!empty($company_name) && !empty($title) && !empty($description)&& !empty($income)) 
-		{
-
-        $sql_query = "UPDATE real_jobs SET company_name='$company_name', title='$title',description='$description',income='$income' WHERE id =  $ID";
+    $company_name = $db->escapeString($_POST['company_name']);
+    $title = $db->escapeString($_POST['title']);
+    $description = $db->escapeString($_POST['description']);
+    $income = $db->escapeString($_POST['income']);
+    $error = array();
+    
+    if (!empty($_FILES['image']['name'])) {
+    
+        $upload_dir = "../upload/image/";
+        $file_name = time() . "_" . basename($_FILES['image']['name']);
+        $target_file = $upload_dir . $file_name;
+    
+        if (move_uploaded_file($_FILES['image']['tmp_name'], $target_file)) {
+    
+            $sql_query = "UPDATE real_jobs SET title='$title', image='$file_name', company_name='$company_name', description='$description', income='$income' WHERE id = $ID";
+            $db->sql($sql_query);
+            $update_result = $db->getResult();
+    
+            if (!empty($update_result)) {
+                $update_result = 0;
+            } else {
+                $update_result = 1;
+            }
+    
+            if ($update_result == 1) {
+                $error['update_real-jobs'] = "<section class='content-header'><span class='label label-success'>real job updated successfully</span></section>";
+            } else {
+                $error['update_real-jobs'] = "<span class='label label-danger'>Failed to update fake job</span>";
+            }
+        } else {
+            $error['upload'] = "<span class='label label-danger'>Failed to upload image</span>";
+        }
+    } else {
+        $sql_query = "UPDATE real_jobs SET title='$title', company_name='$company_name', description='$description', income='$income' WHERE id = $ID";
         $db->sql($sql_query);
         $update_result = $db->getResult();
+    
         if (!empty($update_result)) {
             $update_result = 0;
         } else {
             $update_result = 1;
         }
-
-        // check update result
+    
         if ($update_result == 1) {
-            $error['update_real-jobs'] = " <section class='content-header'><span class='label label-success'>real jobs updated Successfully</span></section>";
+            $error['update_real-jobs'] = "<section class='content-header'><span class='label label-success'>real job updated successfully</span></section>";
         } else {
-            $error['update_real-jobs'] = " <span class='label label-danger'>Failed update</span>";
+            $error['update_real-jobs'] = "<span class='label label-danger'>Failed to update fake job</span>";
         }
     }
-}
-
+}    
 
 // create array variable to store previous data
 $data = array();
@@ -103,6 +125,19 @@ if (isset($_POST['btnCancel'])) { ?>
                                 </div>
                             </div>
                         </div>
+                        <br>
+                        <div class="form-group col-md-4">
+                                  <div class="form-group">
+                                <label for="">Image</label>
+                               <input type="file" class="form-control" name="image" required>
+                                   <?php
+                                if (!empty($res[0]['image'])) {
+                                  $image_url = DOMAIN_URL . 'upload/image/' . $res[0]['image'];
+                                  echo '<p class="help-block"><img src="' . $image_url . '" style="max-width:100%" /></p>';
+                                    }
+                                      ?>
+                            </div>
+                       </div>
           <!-- /.box-body -->
                
                     </div>
