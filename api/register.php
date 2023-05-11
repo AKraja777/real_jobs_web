@@ -48,6 +48,12 @@ if (empty($_POST['skills'])) {
     print_r(json_encode($response));
     return false;
 }
+if (empty($_POST['working_experience'])) {
+    $response['success'] = false;
+    $response['message'] = "Working Experience is Empty";
+    print_r(json_encode($response));
+    return false;
+}
 
 
 
