@@ -11,7 +11,7 @@ include_once('../includes/crud.php');
 
 $db = new Database();
 $db->connect();
-
+date_default_timezone_set('Asia/Kolkata');
 if (empty($_POST['name'])) {
     $response['success'] = false;
     $response['message'] = "Name is Empty";
@@ -64,17 +64,17 @@ $password = $db->escapeString($_POST['password']);
 $place = $db->escapeString($_POST['place']);
 $skills = $db->escapeString($_POST['skills']);
 $working_experience = $db->escapeString($_POST['working_experience']);
-$sql = "SELECT * FROM users WHERE mobile = '$mobile' AND email='$email'";
+$sql = "SELECT * FROM users WHERE mobile = '$mobile'";
 $db->sql($sql);
 $res = $db->getResult();
 $num = $db->numRows($res);
-
+$date = date('Y-m-d');
 if ($num >= 1) {
     $response['success'] = false;
     $response['message'] = "You are Already Registered";
     print_r(json_encode($response));
 } else {
-    $sql = "INSERT INTO users (`name`,`email`,`mobile`,`password`,`place`,`skills`,`working_experience`) VALUES ('$name','$email','$mobile','$password','$place','$skills','$working_experience')";
+    $sql = "INSERT INTO users (`name`,`email`,`mobile`,`password`,`place`,`skills`,`working_experience`,`joined_date`) VALUES ('$name','$email','$mobile','$password','$place','$skills','$working_experience','$date')";
     $db->sql($sql);
     $sql = "SELECT * FROM users WHERE email = '$email'";
     $db->sql($sql);
