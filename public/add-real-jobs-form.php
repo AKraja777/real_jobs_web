@@ -117,18 +117,16 @@ if (isset($_POST['btnAdd'])) {
                             </div>
                         </div>
                         <br>
-                            <div id="packate_div">
-                                
-                                <div class="row">
+                        <div class="row">
                                     <div class="col-md-12">
-                                            <div class="form-group">
-                                        <label for="description">Description :</label> <i class="text-danger asterik">*</i><?php echo isset($error['main_content']) ? $error['main_content'] : ''; ?>
-                                        <textarea name="description" id="description" class="form-control" rows="8"></textarea>
-                                        <script type="text/javascript" src="css/js/ckeditor/ckeditor.js"></script>
-                                        <script type="text/javascript">
-                                            CKEDITOR.replace('description');
-                                        </script>
-                                    </div> 
+                                        <div class="form-group">
+                                            <label for="description">Description :</label> <i class="text-danger asterik">*</i><?php echo isset($error['main_content']) ? $error['main_content'] : ''; ?>
+                                            <textarea name="description" id="description" class="form-control" rows="8"></textarea>
+                                            <script type="text/javascript" src="css/js/ckeditor/ckeditor.js"></script>
+                                            <script type="text/javascript">
+                                                CKEDITOR.replace('description');
+                                            </script>
+                                        </div> 
                                     </div>
                                 </div>
                                 <div class="form-group col-md-4">
@@ -137,7 +135,6 @@ if (isset($_POST['btnAdd'])) {
                                         <input type="file" class="form-control" accept="image/png, image/jpeg" name="image"  required>
                                     </div>
                                 </div>
-                        </div>
                     </div>
 
                     <div class="box-footer">

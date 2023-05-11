@@ -22,7 +22,7 @@ if (isset($_POST['btnEdit'])) {
     
     if (!empty($_FILES['image']['name'])) {
     
-        $upload_dir = "../upload/image/";
+        $upload_dir = "upload/image/";
         $file_name = time() . "_" . basename($_FILES['image']['name']);
         $target_file = $upload_dir . $file_name;
     
@@ -103,7 +103,7 @@ if (isset($_POST['btnCancel'])) { ?>
                         <div class="row">
                             <div class="form-group">
                                 <div class="col-md-6">
-                                    <label for="exampleInputEmail1">Comapny Name</label><i class="text-danger asterik">*</i>
+                                    <label for="exampleInputEmail1">Company Name</label><i class="text-danger asterik">*</i>
                                     <input type="text" class="form-control" name="company_name" value="<?php echo $res[0]['company_name']; ?>">
                                 </div>
                                 <div class="col-md-6">
@@ -114,22 +114,30 @@ if (isset($_POST['btnCancel'])) { ?>
                         </div>
                         <br>
                         <div class="row">
+                            
                             <div class="form-group">
-                                <div class="col-md-6">
-                                    <label for="exampleInputEmail1">Description</label><i class="text-danger asterik">*</i>
-                                    <input type="text" class="form-control" name="description" value="<?php echo $res[0]['description']; ?>">
-                                </div>
-                                <div class="col-md-6">
+                            <div class="col-md-6">
                                     <label for="exampleInputEmail1">Income</label><i class="text-danger asterik">*</i>
                                     <input type="number" class="form-control" name="income" value="<?php echo $res[0]['income']; ?>">
                                 </div>
+                            <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="description">Description :</label> <i class="text-danger asterik">*</i><?php echo isset($error['main_content']) ? $error['main_content'] : ''; ?>
+                                            <textarea name="description" id="description" class="form-control" rows="8"><?php echo $res[0]['description']; ?></textarea>
+                                            <script type="text/javascript" src="css/js/ckeditor/ckeditor.js"></script>
+                                            <script type="text/javascript">
+                                                CKEDITOR.replace('description');
+                                            </script>
+                                        </div> 
+                                    </div>
+
                             </div>
                         </div>
                         <br>
                         <div class="form-group col-md-4">
                                   <div class="form-group">
                                 <label for="">Image</label>
-                               <input type="file" class="form-control" name="image" required>
+                               <input type="file" class="form-control" accept="image/png, image/jpeg"  name="image">
                                    <?php
                                 if (!empty($res[0]['image'])) {
                                   $image_url = DOMAIN_URL . 'upload/image/' . $res[0]['image'];

@@ -24,12 +24,13 @@ if (isset($_POST['btnEdit'])) {
             $working_experience = $db->escapeString(($_POST['working_experience']));
             $status = $db->escapeString(($_POST['status']));
             $chat = $db->escapeString(($_POST['chat']));
+            $payment_status = $db->escapeString(($_POST['payment_status']));
             $error = array();
 
-     if (!empty($name) && !empty($mobile) && !empty($email)&& !empty($password)&& !empty($skills)&& !empty($place)&& !empty($working_experience)&& !empty($status)&& !empty($chat)) 
+     if (!empty($name) && !empty($mobile) && !empty($email)) 
 		{
 
-        $sql_query = "UPDATE users SET name='$name', mobile='$mobile',email='$email',status='$status',chat='$chat',password='$password',place='$place',skills='$skills',working_experience='$working_experience' WHERE id =  $ID";
+        $sql_query = "UPDATE users SET name='$name', mobile='$mobile',email='$email',status='$status',chat='$chat',password='$password',place='$place',skills='$skills',working_experience='$working_experience',payment_status='$payment_status' WHERE id =  $ID";
         $db->sql($sql_query);
         $update_result = $db->getResult();
         if (!empty($update_result)) {
@@ -148,6 +149,13 @@ if (isset($_POST['btnCancel'])) { ?>
                                     <input type="hidden" id="chat" name="chat" value="<?= isset($res[0]['chat']) && $res[0]['chat'] == 1 ? 1 : 0 ?>">
                                 </div>
                           </div>
+                          <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="">Payment Status</label><br>
+                                    <input type="checkbox" id="payment_status_button" class="js-switch" <?= isset($res[0]['payment_status']) && $res[0]['payment_status'] == 1 ? 'checked' : '' ?>>
+                                    <input type="hidden" id="payment_status" name="payment_status" value="<?= isset($res[0]['payment_status']) && $res[0]['payment_status'] == 1 ? 1 : 0 ?>">
+                                </div>
+                          </div>
                         </div>
           <!-- /.box-body -->
                
@@ -187,6 +195,19 @@ if (isset($_POST['btnCancel'])) { ?>
 
         } else {
             $('#chat').val(0);
+        }
+    };
+</script>
+
+<script>
+    var changeCheckbox = document.querySelector('#payment_status_button');
+    var init = new Switchery(changeCheckbox);
+    changeCheckbox.onchange = function() {
+        if ($(this).is(':checked')) {
+            $('#payment_status').val(1);
+
+        } else {
+            $('#payment_status').val(0);
         }
     };
 </script>
