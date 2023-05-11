@@ -16,58 +16,43 @@ if (isset($_POST['btnAdd'])) {
         if (empty($title)) {
             $error['title'] = " <span class='label label-danger'>Required!</span>";
         }
-        if (empty($_FILES['image']['name'])) {
-            $error['image'] = " <span class='label label-danger'>Required!</span>";
-        }
     }
            
        if (!empty($title)) {
-            if ($_FILES['image']['size'] != 0 && $_FILES['image']['error'] == 0 && !empty($_FILES['image'])) 
-            {
-                //image isn't empty and update the image
-                $old_image = isset($_POST['old_image']) ? $db->escapeString($fn->xss_clean($_POST['old_image'])) : '';
-                $extension = pathinfo($_FILES["image"]["name"])['extension'];
-            
-                $result = $fn->validate_image($_FILES["image"]);
-                if (!$result) {
-                    echo " <span class='label label-danger'>bus image type must jpg, jpeg, gif, or png!</span>";
-                    return false;
-                }
-                $target_path = '../upload/buses/';
-                $image = microtime(true) . '.' . strtolower($extension);
-                $full_path = $target_path . "" . $image;
-            
-            
-                if (!move_uploaded_file($_FILES["image"]["tmp_name"], $full_path)) {
-                    echo '<p class="alert alert-danger">Can not upload image.</p>';
-                    return false;
-                }
-            
-                if (!empty($old_image)) {
-                    unlink($target_path . $old_image);
-                }
-                if (isset($id)) {
-                    $sql = "UPDATE fake_jobs SET `image`='" . $image . "' WHERE `id`=" . $id;
-                    $db->sql($sql);
-                }
+        if ($_FILES['image']['error'] == 0 && $_FILES['image']['size'] > 0) {
+            $target_path = 'upload/image/';
+
+            $extension = pathinfo($_FILES["image"]["name"])['extension'];
+            $result = $fn->validate_image($_FILES["image"]);
+            if (!$result) {
+                echo " <span class='label label-danger'>image type must jpg, jpeg, gif, or png!</span>";
+                return false;
+                exit();
             }
-    
+            $image = microtime(true) . '.' . strtolower($extension);
+            $full_path = $target_path . "" . $image;
+            if (!move_uploaded_file($_FILES["image"]["tmp_name"], $full_path)) {
+                echo "<p class='alert alert-danger'>Invalid directory to load image!</p>";
+                return false;
+            }
+        }
         
             $sql_query = "INSERT INTO fake_jobs (title,image) VALUES ('$title','$image')";
             $db->sql($sql_query);
             $result = $db->getResult();
-    }
-                if (!empty($result)) {
-                    $result = 0;
-                } else {
-                    $result = 1;
-                }
-            if ($result == 0) {
-                $error['add_fake_jobs'] = "<section class='content-header'>
-                                          <span class='label label-success'>fake jobs Added Successfully</span> </section>";
+            if (!empty($result)) {
+                $result = 0;
             } else {
-                $error['add_fake_jobs'] = " <span class='label label-danger'>Failed</span>";
+                $result = 1;
             }
+            if ($result == 1) {
+                echo "<div class='alert alert-success'> Jobs Added Successfully!</div>";
+                
+            } else {
+                echo "<div class='alert alert-danger'> Failed!</div>";
+            }
+    }
+
             
     
     ?>
@@ -103,7 +88,7 @@ if (isset($_POST['btnAdd'])) {
                                 <div class="form-group col-md-4">
                                     <div class="form-group">
                                         <label for="">Image</label>
-                                        <input type="file" class="form-control" name="image"  required>
+                                        <input type="file" class="form-control" accept="image/png, image/jpeg" name="image"  required>
                                     </div>
                                 </div>
                             </div>

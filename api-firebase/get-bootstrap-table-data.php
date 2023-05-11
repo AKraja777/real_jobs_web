@@ -211,11 +211,12 @@ if (isset($_GET['table']) && $_GET['table'] == 'fake_jobs') {
         $rows = array();
         $tempRow = array();
         foreach ($res as $row) {
+            $target_path = 'upload/image/';
             $operate = '<a href="edit-fake-jobs.php?id=' . $row['id'] . '" class="text text-primary"><i class="fa fa-edit"></i>Edit</a>';
             $operate .= ' <a class="text text-danger" href="delete-fake-jobs.php?id=' . $row['id'] . '"><i class="fa fa-trash"></i>Delete</a>';
             $tempRow['id'] = $row['id'];
             $tempRow['title'] = $row['title'];
-            $tempRow['image'] = "<a href='" . $row['image'] . "' target='_blank'><img src='" . $row['image'] . "' height='100' /></a>";
+            $tempRow['image'] = "<a href='" . $target_path.$row['image'] . "' target='_blank'><img src='" .$target_path. $row['image'] . "' height='100' /></a>";
             $tempRow['operate'] = $operate;
         
             $rows[] = $tempRow;
