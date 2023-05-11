@@ -110,10 +110,6 @@ if (isset($_POST['btnAdd'])) {
                         <br>
                         <div class="row">
                             <div class="form-group">
-                                <div class='col-md-6'>
-                                <label for="exampleInputEmail1">Description</label> <i class="text-danger asterik">*</i>
-                                    <input type="text" class="form-control" name="description" required>
-                                </div>
                                 <div class="col-md-6">
                                 <label for="exampleInputEmail1">Income</label> <i class="text-danger asterik">*</i>
                                     <input type="number" class="form-control" name="income" required>
@@ -122,12 +118,17 @@ if (isset($_POST['btnAdd'])) {
                         </div>
                         <br>
                             <div id="packate_div">
+                                
                                 <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group packate_div">
-                                            <label for="exampleInputEmail1">job details</label> <i class="text-danger asterik">*</i>
-                                            <textarea type="text" rows="2" class="form-control" name="job_details" required></textarea>
-                                        </div>
+                                    <div class="col-md-12">
+                                            <div class="form-group">
+                                        <label for="description">Description :</label> <i class="text-danger asterik">*</i><?php echo isset($error['main_content']) ? $error['main_content'] : ''; ?>
+                                        <textarea name="description" id="description" class="form-control" rows="8"></textarea>
+                                        <script type="text/javascript" src="css/js/ckeditor/ckeditor.js"></script>
+                                        <script type="text/javascript">
+                                            CKEDITOR.replace('description');
+                                        </script>
+                                    </div> 
                                     </div>
                                 </div>
                                 <div class="form-group col-md-4">
