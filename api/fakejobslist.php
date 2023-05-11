@@ -13,19 +13,32 @@ $db = new Database();
 $db->connect();
 
 
-$sql = "SELECT * FROM fake_jobs";
+$sql = "SELECT * FROM `fake_jobs`";
 $db->sql($sql);
 $res = $db->getResult();
 $num = $db->numRows($res);
+if($num>=1){
+        $rows = array();
+        $temp = array();
+        foreach ($res as $row) {
+            $id = $row['id'];
+            $temp['id'] = $row['id'];
 
-if ($num >= 1) {
-    $response['success'] = true;
-    $response['message'] = "Fake Jobs details listed successfully";
-    $response['data'] = $res;
-    print_r(json_encode($response));
-} else {
+            $temp['title'] = $row['title'];
+            $temp['image'] = DOMAIN_URL .'upload/image/'.$row['image'];
+ 
+            $rows[] = $temp;
+        }
+        $response['success'] = true;
+        $response['message'] = "Fake Jobs Listed Successfully";
+        $response['data'] = $rows;
+        print_r(json_encode($response));
+}
+else{
     $response['success'] = false;
-    $response['message'] = "real jobs not found";
+    $response['message'] = "Data Not Found";
     print_r(json_encode($response));
 }
+
+
 ?>
