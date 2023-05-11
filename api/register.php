@@ -42,6 +42,12 @@ if (empty($_POST['place'])) {
     print_r(json_encode($response));
     return false;
 }
+if (empty($_POST['skills'])) {
+    $response['success'] = false;
+    $response['message'] = "skills is Empty";
+    print_r(json_encode($response));
+    return false;
+}
 
 
 
@@ -50,8 +56,8 @@ $email = $db->escapeString($_POST['email']);
 $mobile = $db->escapeString($_POST['mobile']);
 $password = $db->escapeString($_POST['password']);
 $place = $db->escapeString($_POST['place']);
-
-
+$skills = $db->escapeString($_POST['skills']);
+$working_experience = $db->escapeString($_POST['working_experience']);
 $sql = "SELECT * FROM users WHERE mobile = '$mobile' AND email='$email'";
 $db->sql($sql);
 $res = $db->getResult();
@@ -62,7 +68,7 @@ if ($num >= 1) {
     $response['message'] = "You are Already Registered";
     print_r(json_encode($response));
 } else {
-    $sql = "INSERT INTO users (`name`,`email`,`mobile`,`password`,`place`,`skills`,`working_experience`) VALUES ('$name','$email','$mobile','$password','$place','','')";
+    $sql = "INSERT INTO users (`name`,`email`,`mobile`,`password`,`place`,`skills`,`working_experience`) VALUES ('$name','$email','$mobile','$password','$place','$skills','$working_experience')";
     $db->sql($sql);
     $sql = "SELECT * FROM users WHERE email = '$email'";
     $db->sql($sql);
