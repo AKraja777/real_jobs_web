@@ -195,12 +195,17 @@ $fn = new custom_functions;
                     </a>
                 </li>
                 <li class="treeview">
+                    <a href="settings.php">
+                    <i class="fa fa-gear"></i>
+                        <span>settings</span>
+                    </a>
+                </li>
+                <li class="treeview">
                     <a href="payments.php">
                     <i class="fa fa-money"></i>
                         <span>payments</span>
                     </a>
                 </li>
-             
              
             </section>
             <!-- /.sidebar -->
