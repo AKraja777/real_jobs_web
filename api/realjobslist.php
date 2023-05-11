@@ -27,7 +27,7 @@ if($num>=1){
             $temp['title'] = $row['title'];
             $temp['description'] = $row['description'];
             $temp['income'] = $row['income'];
-            $temp['image'] = DOMAIN_URL . $row['image'];
+            $temp['image'] = DOMAIN_URL .'upload/image/'.$row['image'];
  
             $rows[] = $temp;
         }
