@@ -94,10 +94,16 @@ if (isset($_GET['table']) && $_GET['table'] == 'users') {
         $tempRow['place'] = $row['place'];
         $tempRow['skills'] = $row['skills'];
         $tempRow['working_experience'] = $row['working_experience'];
-        if($row['status']==1)
-        $tempRow['status'] ="<p class='text text-success'>Active</p>";
+        if($row['status']==0)
+        $tempRow['status'] ="<label class='label label-default'>Deactive</label>";
+    elseif($row['status']==1)
+        $tempRow['status']="<label class='label label-success'>Active</label>";        
     else
-        $tempRow['status']="<p class='text text-danger'>Deactive</p>";
+        $tempRow['status']="<label class='label label-danger'>Blocked</label>";
+    if($row['chat']==1)
+        $tempRow['chat'] ="<p class='text text-success'>Enabled</p>";
+    else
+        $tempRow['chat']="<p class='text text-danger'>Disabled</p>";
 
         
         $tempRow['operate'] = $operate;

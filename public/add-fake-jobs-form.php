@@ -19,56 +19,49 @@ if (isset($_POST['btnAdd'])) {
         if (empty($_FILES['image']['name'])) {
             $error['image'] = " <span class='label label-danger'>Required!</span>";
         }
-          
+    }
            
        if (!empty($title)) 
-       {
-       if ($_FILES['image']['size'] != 0 && $_FILES['image']['error'] == 0 && !empty($_FILES['image'])) {
-        //image isn't empty and update the image
-        $old_image = isset($_POST['old_image']) ? $db->escapeString($fn->xss_clean($_POST['old_image'])) : '';
-        $extension = pathinfo($_FILES["image"]["name"])['extension'];
-    
-        $result = $fn->validate_image($_FILES["image"]);
-        if (!$result) {
-            echo " <span class='label label-danger'>bus image type must jpg, jpeg, gif, or png!</span>";
-            return false;
-        }
-        $target_path = '../upload/buses/';
-        $image = microtime(true) . '.' . strtolower($extension);
-        $full_path = $target_path . "" . $image;
-    
-    
-        if (!move_uploaded_file($_FILES["image"]["tmp_name"], $full_path)) {
-            echo '<p class="alert alert-danger">Can not upload image.</p>';
-            return false;
-        }
-    
-        if (!empty($old_image)) {
-            unlink($target_path . $old_image);
-        }
-        if (isset($id)) {
-            $sql = "UPDATE fake_jobs SET `image`='" . $image . "' WHERE `id`=" . $id;
-            $db->sql($sql);
-        }
+        {
+
+       if (isset($_FILES['image']) && !empty($_FILES['image']) && $_FILES['image']['error'] == 0 && $_FILES['image']['size'] > 0 && isset($_POST['title']) && !empty($_POST['title'])) {
+           if (!is_dir('../upload/image/')) {
+               mkdir('../upload/image/', 0777, true);
+           }
+           $image = $db->escapeString($fn->xss_clean($_FILES['image']['name']));
+           $extension = pathinfo($_FILES["image"]["name"], PATHINFO_EXTENSION);
+           $result = $fn->validate_image($_FILES["image"]);
+           if (!$result) {
+               $error['image'] = " <span class='label label-danger'>Image type must be jpg, jpeg, gif, or png!</span>";
+           } else {
+               $image_name = microtime(true) . '.' . strtolower($extension);
+               $full_path = '../upload/image/' . $image_name;
+               $upload_image2 = 'upload/image/' . $image_name;
+               if (!move_uploaded_file($_FILES["image"]["tmp_name"], $full_path)) {
+                   $error['image'] = " <span class='label label-danger'>Invalid directory to upload image!</span>";
+               } else {
+                   $title = $db->escapeString($_POST['title']);
+                   $sql_query = "INSERT INTO fake_jobs (title,image) VALUES ('$title','$upload_image2')";
+                   $db->sql($sql_query);
+                   $result = $db->getResult();
+                   if (!empty($result)) {
+                       $result = 0;
+                   } else {
+                       $result = 1;
+                   }
+               }
+           }
+       }
     }
-}
-      $sql_query = "INSERT INTO fake_jobs (title,image) VALUES ('$title','$image')";
-      $db->sql($sql_query);
-     $result = $db->getResult();
-   }
-    if (!empty($result)) {
-        $result = 0;
-    } else {
-        $result = 1;
-    }
-if ($result == 0) {
-    $error['add_fake-jobs'] = "<section class='content-header'>
-                              <span class='label label-success'>fake jobs Added Successfully</span> </section>";
-} else {
-    $error['add_fake-jobs'] = " <span class='label label-danger'>Failed</span>";
-}    
-        
-?>
+       if ($result == 0) {
+           $error['add_fake_jobs'] = "<section class='content-header'>
+                                   <span class='label label-success'>Fake jobs added successfully</span>
+                                 </section>";
+       } else {
+           $error['add_fake_jobs'] = " <span class='label label-danger'>Failed</span>";
+       }
+      ?> 
+
 <section class="content-header">
     <h1>Add New Jobs <small><a href='fake-jobs.php'> <i class='fa fa-angle-double-left'></i>&nbsp;&nbsp;&nbsp;Back to Jobs</a></small></h1>
 

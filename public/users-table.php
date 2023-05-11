@@ -33,6 +33,7 @@
                                     <th data-field="skills" data-sortable="true">Skills</th>
                                     <th data-field="working_experience" data-sortable="true">Working Experience</th>
                                     <th data-field="status" data-sortable="true">Status</th>
+                                    <th data-field="chat" data-sortable="true">chat</th>
                                 </tr>
                             </thead>
                         </table>
