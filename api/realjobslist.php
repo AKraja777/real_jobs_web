@@ -27,12 +27,8 @@ if($num>=1){
             $temp['title'] = $row['title'];
             $temp['description'] = $row['description'];
             $temp['income'] = $row['income'];
-            $temp['image'] = $row['image'];
+            $temp['image'] = DOMAIN_URL . $row['image'];
  
-            $sql = "SELECT * FROM `real_jobs_variant` WHERE real_jobs_id = '$id'";
-            $db->sql($sql);
-            $res = $db->getResult();
-            $temp['real_jobs_variant'] = $res;
             $rows[] = $temp;
         }
         $response['success'] = true;
