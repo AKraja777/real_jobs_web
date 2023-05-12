@@ -33,10 +33,16 @@ if (!isset($_FILES['screenshot']) || empty($_FILES['screenshot']['name'])) {
     print_r(json_encode($response));
     return false;
 }
+if (empty($_POST['user_id'])) {
+    $response['success'] = false;
+    $response['message'] = "Please enter a user id";
+    print_r(json_encode($response));
+    return false;
+}
 
 $title = $db->escapeString($_POST['title']);
 $description = $db->escapeString($_POST['description']);
-
+$user_id = $db->escapeString($_POST['user_id']);
 if (isset($_FILES['screenshot']) && !empty($_FILES['screenshot']) && $_FILES['screenshot']['error'] == 0 && $_FILES['screenshot']['size'] > 0) {
     if (!is_dir('../upload/screenshot/')) {
         mkdir('../upload/screenshot/', 0777, true);
@@ -51,8 +57,8 @@ if (isset($_FILES['screenshot']) && !empty($_FILES['screenshot']) && $_FILES['sc
         return false;
     }
     $screenshot_name = microtime(true) . '.' . strtolower($extension);
-    $full_path = '../upload/screenshot/' . $screenshot_name;
-    $upload_image2 = 'upload/screenshot/' . $screenshot_name;
+    $full_path = '../upload/image/' . $screenshot_name;
+    $upload_image2 = 'upload/image/' . $screenshot_name;
     if (!move_uploaded_file($_FILES["screenshot"]["tmp_name"], $full_path)) {
         $response["success"] = false;
         $response["message"] = "Invalid directory to upload image!";
@@ -61,13 +67,13 @@ if (isset($_FILES['screenshot']) && !empty($_FILES['screenshot']) && $_FILES['sc
     }
 }
 
-$sql = "INSERT INTO check_fake_jobs (title,description,screenshot) VALUES ('$title','$description', '$upload_image2')";
+$sql = "INSERT INTO check_fake_jobs (user_id,title,description,screenshot) VALUES ($user_id,'$title''$title','$description', '$upload_image2')";
 $db->sql($sql);
 $sql = "SELECT * FROM check_fake_jobs ";
 $db->sql($sql);
 $res = $db->getResult();
 $response['success'] = true;
-$response['message'] = "fake jobs added Successfully";
+$response['message'] = "Jobs added Successfully";
 $response['data'] = $res;
 print_r(json_encode($response));
 
