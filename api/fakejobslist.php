@@ -13,7 +13,7 @@ $db = new Database();
 $db->connect();
 
 
-$sql = "SELECT * FROM `fake_jobs`";
+$sql = "SELECT * FROM `fake_jobs` ORDER BY id DESC";
 $db->sql($sql);
 $res = $db->getResult();
 $num = $db->numRows($res);
