@@ -44,8 +44,8 @@ $title = $db->escapeString($_POST['title']);
 $description = $db->escapeString($_POST['description']);
 $user_id = $db->escapeString($_POST['user_id']);
 if (isset($_FILES['screenshot']) && !empty($_FILES['screenshot']) && $_FILES['screenshot']['error'] == 0 && $_FILES['screenshot']['size'] > 0) {
-    if (!is_dir('../upload/screenshot/')) {
-        mkdir('../upload/screenshot/', 0777, true);
+    if (!is_dir('../upload/images/')) {
+        mkdir('../upload/images/', 0777, true);
     }
     $screenshot = $db->escapeString($fn->xss_clean($_FILES['screenshot']['name']));
     $extension = pathinfo($_FILES["screenshot"]["name"], PATHINFO_EXTENSION);
@@ -57,8 +57,8 @@ if (isset($_FILES['screenshot']) && !empty($_FILES['screenshot']) && $_FILES['sc
         return false;
     }
     $screenshot_name = microtime(true) . '.' . strtolower($extension);
-    $full_path = '../upload/image/' . $screenshot_name;
-    $upload_image2 = 'upload/image/' . $screenshot_name;
+    $full_path = '../upload/images/' . $screenshot_name;
+    $upload_image2 = 'upload/images/' . $screenshot_name;
     if (!move_uploaded_file($_FILES["screenshot"]["tmp_name"], $full_path)) {
         $response["success"] = false;
         $response["message"] = "Invalid directory to upload image!";
