@@ -113,7 +113,6 @@ if (isset($_POST['btnCancel'])) { ?>
                                 <div class="form-group col-md-4">
                                   <div class="form-group">
                                 <label for="">Image</label>
-                               <input type="file" class="form-control" name="image" required>
                                    <?php
                                 if (!empty($res[0]['image'])) {
                                   $image_url = DOMAIN_URL . 'upload/buses/' . $res[0]['image'];

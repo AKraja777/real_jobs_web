@@ -21,31 +21,19 @@ if (empty($_POST['user_id'])) {
 
 $user_id = $db->escapeString($_POST['user_id']);
 
-
 $sql = "SELECT * FROM check_fake_jobs WHERE user_id = '$user_id'";
 $db->sql($sql);
 $res = $db->getResult();
 $num = $db->numRows($res);
-if($num>=1){
-        $rows = array();
-        $temp = array();
-        foreach ($res as $row) {
-        
-            $temp['id'] = $row['id'];
-            $temp['description'] = $row['description'];
-            $temp['screenshot'] = DOMAIN_URL .'upload/image/'.$row['screenshot'];
-            $rows[] = $temp;
-        }
-        $response['success'] = true;
-        $response['message'] = "Jobs Listed Successfully";
-        $response['data'] = $rows;
-        print_r(json_encode($response));
-}
-else{
+
+if ($num >= 1) {
+    $response['success'] = true;
+    $response['message'] = "fake jobs listed successfully";
+    $response['data'] = $res;
+    print_r(json_encode($response));
+} else {
     $response['success'] = false;
-    $response['message'] = "Data Not Found";
+    $response['message'] = "User not found";
     print_r(json_encode($response));
 }
-
-
 ?>

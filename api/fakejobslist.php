@@ -23,7 +23,6 @@ if($num>=1){
         foreach ($res as $row) {
             $id = $row['id'];
             $temp['id'] = $row['id'];
-
             $temp['title'] = $row['title'];
             $temp['image'] = DOMAIN_URL .'upload/image/'.$row['image'];
  
