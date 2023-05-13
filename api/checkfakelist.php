@@ -27,13 +27,27 @@ $res = $db->getResult();
 $num = $db->numRows($res);
 
 if ($num >= 1) {
+    foreach($res as $row){
+
+        $temp['id'] = $row['id'];
+        $temp['title'] = $row['title'];
+        $temp['description'] = $row['description'];
+        $temp['screenshot'] = DOMAIN_URL . $row['screenshot'];
+        $temp['status'] = $row['status'];
+        $temp['user_id'] = $row['user_id'];
+        $rows[] = $temp;
+
+    }
     $response['success'] = true;
-    $response['message'] = "fake jobs listed successfully";
-    $response['data'] = $res;
-    print_r(json_encode($response));
-} else {
-    $response['success'] = false;
-    $response['message'] = "User not found";
+    $response['message'] = "fake jobs details Retieved Successfully";
+    $response['data'] = $rows;
     print_r(json_encode($response));
 }
+else{
+    
+    $response['success'] = false;
+    $response['message'] =" Not Found";
+    print_r(json_encode($response));
+}
+
 ?>
