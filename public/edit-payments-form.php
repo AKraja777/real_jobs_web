@@ -72,17 +72,12 @@ if (isset($_POST['btnCancel'])) { ?>
                 <form id="edit_payments_form" method="post" enctype="multipart/form-data">
                     <div class="box-body">
                      <div class="row">
-                     <div class="form-group col-md-4">
-                                  <div class="form-group">
-                                <label for="">Image</label>
-                                   <?php
-                                if (!empty($res[0]['image'])) {
-                                  $image_url = DOMAIN_URL . 'upload/image/' . $res[0]['image'];
-                                  echo '<p class="help-block"><img src="' . $image_url . '" style="max-width:100%" /></p>';
-                                    }
-                                      ?>
-                            </div>
-                                </div>
+                     <div class="form-group">
+                     <div class="col-md-4">
+                         <label for="exampleInputEmail1">image</label> <i class="text-danger asterik">*</i>
+                             <img src="<?php echo $res[0]['image']; ?>" alt="image" class="img-fluid" style="max-width: 100%; max-height: 200px;">
+                         </div>
+                     </div>
                             <div class="form-group">
                                 <div class="col-md-4">
                                     <label class="control-label">Payment Status</label> <i class="text-danger asterik">*</i><br>
