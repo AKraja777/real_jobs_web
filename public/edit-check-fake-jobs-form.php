@@ -14,59 +14,25 @@ if (isset($_GET['id'])) {
     exit(0);
 }
 if (isset($_POST['btnEdit'])) {
-    $title = $db->escapeString($_POST['title']);
-    $description = $db->escapeString($_POST['description']);
     $status = $db->escapeString($_POST['status']);
     $error = array();
     
    
-    if (!empty($_FILES['screenshot']['name'])) {
-        
-        $upload_dir = "../upload/images/";
-        $file_name = time() . "_" . basename($_FILES['screenshot']['name']);
-        $target_file = $upload_dir . $file_name;
+    $sql_query = "UPDATE check_fake_jobs SET status='$status' WHERE id = $ID";
+    $db->sql($sql_query);
+    $update_result = $db->getResult();
 
-       
-        if (move_uploaded_file($_FILES['images']['tmp_name'], $target_file)) {
-
-            $sql_query = "UPDATE check_fake_jobs SET title='$title', screenshot='$file_name',description='$description',status='$status' WHERE id = $ID";
-            $db->sql($sql_query);
-            $update_result = $db->getResult();
-            
-            if (!empty($update_result)) {
-                $update_result = 0;
-            } else {
-                $update_result = 1;
-            }
-
-            
-            if ($update_result == 1) {
-                $error['update_check-fake-jobs'] = "<section class='content-header'><span class='label label-success'>check fake jobs updated Successfully</span></section>";
-            } else {
-                $error['update_check-fake-jobs'] = "<span class='label label-danger'>Failed update</span>";
-            }
-        } else {
-            
-            $error['upload'] = "<span class='label label-danger'>Failed to upload image</span>";
-        }
+    if (!empty($update_result)) {
+        $update_result = 0;
     } else {
-      
-        $sql_query = "UPDATE check_fake_jobs SET title='$title',description='$description',status='$status' WHERE id = $ID";
-        $db->sql($sql_query);
-        $update_result = $db->getResult();
-        
-        if (!empty($update_result)) {
-            $update_result = 0;
-        } else {
-            $update_result = 1;
-        }
+        $update_result = 1;
+    }
 
-        // check update result
-        if ($update_result == 1) {
-            $error['update_check-fake-jobs'] = "<section class='content-header'><span class='label label-success'>check fake jobs updated Successfully</span></section>";
-        } else {
-            $error['update_check-fake-jobs'] = "<span class='label label-danger'>Failed update</span>";
-        }
+    // check update result
+    if ($update_result == 1) {
+        $error['update_check-fake-jobs'] = "<section class='content-header'><span class='label label-success'>check fake jobs updated Successfully</span></section>";
+    } else {
+        $error['update_check-fake-jobs'] = "<span class='label label-danger'>Failed update</span>";
     }
 }
 
@@ -74,7 +40,7 @@ if (isset($_POST['btnEdit'])) {
 // create array variable to store previous data
 $data = array();
 
-$sql_query = "SELECT * FROM check_fake_jobs ";
+$sql_query = "SELECT * FROM check_fake_jobs WHERE id = $ID";
 $db->sql($sql_query);
 $res = $db->getResult();
 if (isset($_POST['btnCancel'])) { ?>
@@ -106,26 +72,20 @@ if (isset($_POST['btnCancel'])) { ?>
                             <div class="form-group">
                                 <div class="col-md-6">
                                     <label for="exampleInputEmail1">title</label> <i class="text-danger asterik">*</i>
-                                    <input type="text" class="form-control" name="title" value="<?php echo $res[0]['title']; ?>">
+                                    <input type="text" class="form-control" name="title" value="<?php echo $res[0]['title']; ?>" readonly>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="exampleInputEmail1">description</label> <i class="text-danger asterik">*</i>
-                                    <input type="text" class="form-control" name="description" value="<?php echo $res[0]['description']; ?>">
+                                    <input type="text" class="form-control" name="description" value="<?php echo $res[0]['description']; ?>" readonly>
                                 </div>
                             </div>
                         </div>
                         <br>
-                                  <div class="form-group">
-                                <label for="">screenshot</label>
-                               <input type="file" class="form-control" name="screenshot" required>
-                                   <?php
-                                if (!empty($res[0]['screenshot'])) {
-                                  $image_url = DOMAIN_URL . 'upload/screenshot/' . $res[0]['screenshot'];
-                                  echo '<p class="help-block"><img src="' . $image_url . '" style="max-width:100%" /></p>';
-                                    }
-                                      ?>
-                            </div>
-                       </div>
+                        <div class="col-md-">
+                         <label for="exampleInputEmail1">Screenshot</label> <i class="text-danger asterik">*</i>
+                             <img src="<?php echo $res[0]['screenshot']; ?>" alt="Screenshot" class="img-fluid" style="max-width: 100%; max-height: 200px;">
+                         </div>
+
                         <br>
                         <div class="row">
                             <div class="form-group">

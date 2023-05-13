@@ -44,8 +44,8 @@ $title = $db->escapeString($_POST['title']);
 $description = $db->escapeString($_POST['description']);
 $user_id = $db->escapeString($_POST['user_id']);
 if (isset($_FILES['screenshot']) && !empty($_FILES['screenshot']) && $_FILES['screenshot']['error'] == 0 && $_FILES['screenshot']['size'] > 0) {
-    if (!is_dir('../upload/images/')) {
-        mkdir('../upload/images/', 0777, true);
+    if (!is_dir('../upload/screenshot/')) {
+        mkdir('../upload/screenshot/', 0777, true);
     }
     $screenshot = $db->escapeString($fn->xss_clean($_FILES['screenshot']['name']));
     $extension = pathinfo($_FILES["screenshot"]["name"], PATHINFO_EXTENSION);
