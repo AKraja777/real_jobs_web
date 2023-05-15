@@ -36,6 +36,7 @@
                                     <th data-field="chat" data-sortable="true">chat</th>
                                     <th data-field="plan_start_date" data-sortable="true">Plan Start Date</th>
                                     <th data-field="plan_end_date" data-sortable="true">Plan End Date</th>
+                                    <th data-field="remaining_days" data-sortable="true">remaining_days</th>
                                 </tr>
                             </thead>
                         </table>

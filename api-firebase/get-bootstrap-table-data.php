@@ -95,6 +95,7 @@ if (isset($_GET['table']) && $_GET['table'] == 'users') {
         $tempRow['skills'] = $row['skills'];
         $tempRow['plan_start_date'] = $row['plan_start_date'];
         $tempRow['plan_end_date'] = $row['plan_end_date'];
+        $tempRow['remaining_days'] = $row['remaining_days'];
         $tempRow['working_experience'] = $row['working_experience'];
         if($row['status']==0)
         $tempRow['status'] ="<label class='label label-default'>Deactive</label>";

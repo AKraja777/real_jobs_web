@@ -28,7 +28,7 @@ if (isset($_POST['btnEdit'])) {
             $error = array();
 
        if (!empty($name) && !empty($mobile) && !empty($email)) {
-        $sql_query = "UPDATE users SET name='$name', mobile='$mobile', email='$email', status='$status', chat='$chat', password='$password', place='$place', skills='$skills', working_experience='$working_experience', payment_status='$payment_status', plan_start_date=CURDATE(), plan_end_date=DATE_ADD(CURDATE(), INTERVAL 30 DAY) WHERE id = $ID";
+        $sql_query = "UPDATE users SET name='$name', mobile='$mobile', email='$email', status='$status', chat='$chat', password='$password', place='$place', skills='$skills', working_experience='$working_experience', payment_status='$payment_status', plan_start_date=CURDATE(), plan_end_date=DATE_ADD(CURDATE(), INTERVAL 30 DAY),remaining_days = GREATEST(DATEDIFF(DATE_ADD(CURDATE(), INTERVAL 30 DAY), CURDATE()) - 1, 0) WHERE id = $ID";
        $db->sql($sql_query);
         $update_result = $db->getResult();
         if (!empty($update_result)) {
@@ -154,8 +154,6 @@ if (isset($_POST['btnCancel'])) { ?>
                                     <input type="hidden" id="payment_status" name="payment_status" value="<?= isset($res[0]['payment_status']) && $res[0]['payment_status'] == 1 ? 1 : 0 ?>">
                                 </div>
                           </div>
-                          <div class="current-date-container"></div>
-
                         </div>
           <!-- /.box-body -->
                
@@ -201,36 +199,30 @@ if (isset($_POST['btnCancel'])) { ?>
 
 <script>
 $(document).ready(function() {
-    var changeCheckbox = document.querySelector('#payment_status_button');
-    var init = new Switchery(changeCheckbox);
+  var changeCheckbox = document.querySelector('#payment_status_button');
+  var init = new Switchery(changeCheckbox);
 
-    function updatePlanStartDate() {
-        if ($('#payment_status_button').is(':checked')) {
-            var currentDate = new Date().toLocaleDateString();
-            var endDate = new Date();
-            endDate.setDate(endDate.getDate() + 30);
+  changeCheckbox.onchange = function() {
+    updateDates();
+  };
 
-            if ($('#plan_start_date').length === 0) {
-                $('#payment_status_button').parent().append('<span id="plan_start_date" style="margin-left: 10px; display: inline-block;">' + currentDate + '</span>');
-            }
-
-            if ($('#plan_end_date').length === 0) {
-                $('#payment_status_button').parent().append('<span id="plan_end_date" style="margin-left: 10px; display: inline-block;">' + endDate.toLocaleDateString() + '</span>');
-            }
-        } else {
-            $('#plan_start_date').remove();
-            $('#plan_end_date').remove();
-        }
-    }
-
-    changeCheckbox.onchange = function() {
-        updatePlanStartDate();
-    };
-
-    
+  function updateDates() {
     if ($('#payment_status_button').is(':checked')) {
-        updatePlanStartDate();
+      var currentDate = new Date().toLocaleDateString();
+      var endDate = new Date();
+      endDate.setDate(endDate.getDate() + 30);
+
+      $('#plan_start_date').text('Current Date: ' + currentDate);
+      $('#plan_end_date').text('End Date: ' + endDate.toLocaleDateString());
+
+      $('#payment_status').val(1);
+    } else {
+      $('#plan_start_date').text('');
+      $('#plan_end_date').text('');
+
+      $('#payment_status').val(0);
     }
+  }
 });
 
 </script>
