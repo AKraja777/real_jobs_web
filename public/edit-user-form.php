@@ -208,14 +208,14 @@ $(document).ready(function() {
         if ($('#payment_status_button').is(':checked')) {
             var currentDate = new Date().toLocaleDateString();
             var endDate = new Date();
-            endDate.setDate(endDate.getDate() + 30); // Adding 30 days to the current date
+            endDate.setDate(endDate.getDate() + 30);
 
             if ($('#plan_start_date').length === 0) {
-                $('#payment_status_button').parent().append('<span id="plan_start_date" style="margin-left: 10px;">' + currentDate + '</span>');
+                $('#payment_status_button').parent().append('<span id="plan_start_date" style="margin-left: 10px; display: inline-block;">' + currentDate + '</span>');
             }
 
             if ($('#plan_end_date').length === 0) {
-                $('#payment_status_button').parent().append('<span id="plan_end_date" style="margin-left: 10px;">' + endDate.toLocaleDateString() + '</span>');
+                $('#payment_status_button').parent().append('<span id="plan_end_date" style="margin-left: 10px; display: inline-block;">' + endDate.toLocaleDateString() + '</span>');
             }
         } else {
             $('#plan_start_date').remove();
@@ -227,13 +227,10 @@ $(document).ready(function() {
         updatePlanStartDate();
     };
 
-    // Initial check on page load
+    
     if ($('#payment_status_button').is(':checked')) {
         updatePlanStartDate();
     }
 });
-
-
-
 
 </script>
