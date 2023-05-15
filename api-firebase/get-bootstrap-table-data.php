@@ -268,7 +268,7 @@ if (isset($_GET['table']) && $_GET['table'] == 'fake_jobs') {
             $tempRow = array();
             foreach ($res as $row) {
                 $operate = '<a href="edit-check-fake-jobs.php?id=' . $row['id'] . '" class="text text-primary"><i class="fa fa-edit"></i>Edit</a>';
-                $operate .= ' <a class="text text-danger" href="delete-fake-jobs.php?id=' . $row['id'] . '"><i class="fa fa-trash"></i>Delete</a>';
+                $operate .= ' <a class="text text-danger" href="delete-check-fake-jobs.php?id=' . $row['id'] . '"><i class="fa fa-trash"></i>Delete</a>';
                 $tempRow['id'] = $row['id'];
                 $tempRow['title'] = $row['title'];
                 $tempRow['description'] = $row['description'];
