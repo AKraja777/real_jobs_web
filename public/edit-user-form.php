@@ -202,6 +202,30 @@ $(document).ready(function() {
   var changeCheckbox = document.querySelector('#payment_status_button');
   var init = new Switchery(changeCheckbox);
 
+  
+  if ($('#payment_status_button').is(':checked')) {
+   
+    var currentDate = new Date().toLocaleDateString();
+    var endDate = new Date();
+    endDate.setDate(endDate.getDate() + 30);
+
+   
+    $('#plan_start_date').text('Current Date: ' + currentDate);
+    $('#plan_end_date').text('End Date: ' + endDate.toLocaleDateString());
+
+  
+    $('#payment_status').val(1);
+
+   
+    var remainingMilliseconds = endDate.getTime() - Date.now();
+
+    
+    setTimeout(function() {
+      changeCheckbox.checked = false;
+      updateDates();
+    }, remainingMilliseconds);
+  }
+
   changeCheckbox.onchange = function() {
     updateDates();
   };
@@ -224,5 +248,6 @@ $(document).ready(function() {
     }
   }
 });
+
 
 </script>
