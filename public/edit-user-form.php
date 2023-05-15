@@ -155,6 +155,23 @@ if (isset($_POST['btnCancel'])) { ?>
                                 </div>
                           </div>
                         </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-md-4">
+                                    <label for="exampleInputEmail1">Plan Start Date</label><i class="text-danger asterik">*</i>
+                                    <input type="plan_start_date" class="form-control" name="plan_start_date" value="<?php echo $res[0]['plan_start_date']; ?>" readonly>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="exampleInputEmail1">Plan End Date</label><i class="text-danger asterik">*</i>
+                                    <input type="plan_end_date" class="form-control" name="plan_end_date" value="<?php echo $res[0]['plan_end_date']; ?>" readonly>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="exampleInputEmail1">Remaining Days</label><i class="text-danger asterik">*</i>
+                                    <input type="remaining_days" class="form-control" name="remaining_days" value="<?php echo $res[0]['remaining_days']; ?>" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
           <!-- /.box-body -->
                
 
