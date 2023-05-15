@@ -86,7 +86,7 @@ if (isset($_POST['btnCancel'])) { ?>
                             <div class="form-group">
                                 <div class='col-md-6'>
                                     <label for="exampleInputEmail1">Name</label> <i class="text-danger asterik">*</i>
-                                    <input type="text" class="form-control" name="name" value="<?php echo $res[0]['name']; ?>">
+                                    <input type="text" class="form-control" name="name" value="<?php echo $res[0]['name']; ?>" readonly>
                                 </div>
 
                             </div>
@@ -97,11 +97,11 @@ if (isset($_POST['btnCancel'])) { ?>
                             <div class="form-group">
                                 <div class="col-md-6">
                                     <label for="exampleInputEmail1">Mobile Number</label><i class="text-danger asterik">*</i>
-                                    <input type="mobile" class="form-control" name="mobile" value="<?php echo $res[0]['mobile']; ?>">
+                                    <input type="mobile" class="form-control" name="mobile" value="<?php echo $res[0]['mobile']; ?>" readonly>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="exampleInputEmail1">Email</label><i class="text-danger asterik">*</i>
-                                    <input type="text" class="form-control" name="email" value="<?php echo $res[0]['email']; ?>">
+                                    <input type="text" class="form-control" name="email" value="<?php echo $res[0]['email']; ?>" readonly>
                                 </div>
                             </div>
                         </div>
@@ -110,11 +110,11 @@ if (isset($_POST['btnCancel'])) { ?>
                             <div class="form-group">
                                 <div class="col-md-6">
                                     <label for="exampleInputEmail1">Password</label><i class="text-danger asterik">*</i>
-                                    <input type="password" class="form-control" name="password" value="<?php echo $res[0]['password']; ?>">
+                                    <input type="password" class="form-control" name="password" value="<?php echo $res[0]['password']; ?>" readonly>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="exampleInputEmail1">Place</label><i class="text-danger asterik">*</i>
-                                    <input type="text" class="form-control" name="place" value="<?php echo $res[0]['place']; ?>">
+                                    <input type="text" class="form-control" name="place" value="<?php echo $res[0]['place']; ?>" readonly>
                                 </div>
                             </div>
                         </div>
@@ -123,11 +123,11 @@ if (isset($_POST['btnCancel'])) { ?>
                             <div class="form-group">
                                 <div class="col-md-6">
                                     <label for="exampleInputEmail1">Skills</label><i class="text-danger asterik">*</i>
-                                    <input type="text" class="form-control" name="skills" value="<?php echo $res[0]['skills']; ?>">
+                                    <input type="text" class="form-control" name="skills" value="<?php echo $res[0]['skills']; ?>" readonly>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="exampleInputEmail1">Working Experience</label><i class="text-danger asterik">*</i>
-                                    <input type="working_experience" class="form-control" name="working_experience" value="<?php echo $res[0]['working_experience']; ?>">
+                                    <input type="working_experience" class="form-control" name="working_experience" value="<?php echo $res[0]['working_experience']; ?>" readonly>
                                 </div>
                             </div>
                         </div>
