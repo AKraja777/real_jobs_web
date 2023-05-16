@@ -28,8 +28,8 @@ if (isset($_POST['btnEdit'])) {
             $error = array();
 
        if (!empty($name) && !empty($mobile) && !empty($email)) {
-        $sql_query = "UPDATE users SET name='$name', mobile='$mobile', email='$email', status='$status', chat='$chat', password='$password', place='$place', skills='$skills', working_experience='$working_experience', payment_status='$payment_status', plan_start_date=CURDATE(), plan_end_date=DATE_ADD(CURDATE(), INTERVAL 30 DAY),remaining_days = GREATEST(DATEDIFF(plan_end_date, CURDATE()) - 1, 0)  WHERE id = $ID";
-        $db->sql($sql_query);
+        $sql_query = "UPDATE users SET name='$name', mobile='$mobile', email='$email', status='$status', chat='$chat', password='$password', place='$place', skills='$skills', working_experience='$working_experience', payment_status='$payment_status', plan_start_date=CURDATE(), plan_end_date=DATE_ADD(CURDATE(), INTERVAL 30 DAY), remaining_days = GREATEST(DATEDIFF(DATE_ADD(CURDATE(), INTERVAL 30 DAY), CURDATE()) - 1, 0) WHERE id = $ID";
+        $db->sql($sql_query);        
        $update_result = $db->getResult();
         if (!empty($update_result)) {
             $update_result = 0;
@@ -215,56 +215,52 @@ if (isset($_POST['btnCancel'])) { ?>
 </script>
 
 <script>
-$(document).ready(function() {
-  var changeCheckbox = document.querySelector('#payment_status_button');
-  var init = new Switchery(changeCheckbox);
+  $(document).ready(function() {
+    var changeCheckbox = document.querySelector('#payment_status_button');
+    var init = new Switchery(changeCheckbox);
 
-  
-  if ($('#payment_status_button').is(':checked')) {
-   
-    var currentDate = new Date().toLocaleDateString();
-    var endDate = new Date();
-    endDate.setDate(endDate.getDate() + 30);
-
-   
-    $('#plan_start_date').text('Current Date: ' + currentDate);
-    $('#plan_end_date').text('End Date: ' + endDate.toLocaleDateString());
-
-  
-    $('#payment_status').val(1);
-
-   
-    var remainingMilliseconds = endDate.getTime() - Date.now();
-
-    
-    setTimeout(function() {
-      changeCheckbox.checked = false;
-      updateDates();
-    }, remainingMilliseconds);
-  }
-
-  changeCheckbox.onchange = function() {
-    updateDates();
-  };
-
-  function updateDates() {
     if ($('#payment_status_button').is(':checked')) {
-      var currentDate = new Date().toLocaleDateString();
-      var endDate = new Date();
-      endDate.setDate(endDate.getDate() + 30);
-
-      $('#plan_start_date').text('Current Date: ' + currentDate);
-      $('#plan_end_date').text('End Date: ' + endDate.toLocaleDateString());
-
-      $('#payment_status').val(1);
-    } else {
-      $('#plan_start_date').text('');
-      $('#plan_end_date').text('');
-
-      $('#payment_status').val(0);
+      updateDates();
     }
-  }
-});
 
+    changeCheckbox.onchange = function() {
+      updateDates();
+    };
 
+    function updateDates() {
+      if ($('#payment_status_button').is(':checked')) {
+        var currentDate = new Date().toLocaleDateString();
+        var endDate = new Date();
+        endDate.setDate(endDate.getDate() + 30);
+
+        $('#plan_start_date').text('Current Date: ' + currentDate);
+        $('#plan_end_date').text('End Date: ' + endDate.toLocaleDateString());
+
+        updateRemainingDays();
+
+        $('#payment_status').val(1);
+      } else {
+        $('#plan_start_date').text('');
+        $('#plan_end_date').text('');
+        $('#remaining_days').text('');
+        $('#payment_status').val(0);
+      }
+    }
+
+    function updateRemainingDays() {
+      var endDate = new Date($('#plan_end_date').text().replace('End Date: ', ''));
+      var remainingMilliseconds = endDate.getTime() - Date.now();
+      var remainingDays = Math.ceil(remainingMilliseconds / (1000 * 60 * 60 * 24));
+
+      $('#remaining_days').text('Remaining Days: ' + remainingDays);
+
+      if (remainingDays > 0) {
+        endDate.setDate(endDate.getDate() - 1);
+
+        setTimeout(function() {
+          updateRemainingDays();
+        }, 24 * 60 * 60 * 1000); 
+      }
+    }
+  });
 </script>
