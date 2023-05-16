@@ -362,3 +362,163 @@ if (isset($_GET['table']) && $_GET['table'] == 'fake_jobs') {
             $bulkData['rows'] = $rows;
             print_r(json_encode($bulkData));
         }
+
+        if (isset($_GET['table']) && $_GET['table'] == 'completed') {
+            $offset = 0;
+            $limit = 10;
+            $where = '';
+            $sort = 'id';
+            $order = 'DESC';
+        
+            if (isset($_GET['offset']))
+                $offset = $db->escapeString($fn->xss_clean($_GET['offset']));
+            if (isset($_GET['limit']))
+                $limit = $db->escapeString($fn->xss_clean($_GET['limit']));
+        
+            if (isset($_GET['sort']))
+                $sort = $db->escapeString($fn->xss_clean($_GET['sort']));
+            if (isset($_GET['order']))
+                $order = $db->escapeString($fn->xss_clean($_GET['order']));
+        
+            if (isset($_GET['search']) && !empty($_GET['search'])) {
+                $search = $db->escapeString($fn->xss_clean($_GET['search']));
+                $where = "WHERE u.name LIKE '%" . $search . "%' OR u.mobile LIKE '%" . $search . "%' OR u.email LIKE '%" . $search . "%' OR u.password LIKE '%" . $search . "%' OR u.skills LIKE '%" . $search . "%' OR u.place LIKE '%" . $search . "%'";
+            }
+
+            $paymentOptionEnabled = false;
+            if ($paymentOptionEnabled) {
+                $where .= ($where ? " AND " : " WHERE ") . "u.payment_status = 'enabled'";
+            } else {
+                $where .= ($where ? " AND " : " WHERE ") . "u.payment_status != 'disabled'";
+            }
+
+            $sql = "SELECT COUNT(`id`) as total FROM `users` u " . $where;
+            $db->sql($sql);
+            $res = $db->getResult();
+            foreach ($res as $row) {
+                $total = $row['total'];
+            }
+        
+            $sql = "SELECT * FROM users u " . $where . " ORDER BY " . $sort . " " . $order . " LIMIT " . $offset . "," . $limit;
+            $db->sql($sql);
+            $res = $db->getResult();
+            $bulkData = array();
+        
+                $bulkData['total'] = $total;
+                $rows = array();
+                $tempRow = array();
+                foreach ($res as $row) {
+                $operate = '<a href="edit-user.php?id=' . $row['id'] . '" class="text text-primary"><i class="fa fa-edit"></i>Edit</a>';
+                $operate .= ' <a class="text text-danger" href="delete-user.php?id=' . $row['id'] . '"><i class="fa fa-trash"></i>Delete</a>';
+                $tempRow['id'] = $row['id'];
+                $tempRow['name'] = $row['name'];
+                $tempRow['mobile'] = $row['mobile'];
+                $tempRow['password'] = $row['password'];
+                $tempRow['email'] = $row['email'];
+                $tempRow['place'] = $row['place'];
+                $tempRow['skills'] = $row['skills'];
+                $tempRow['plan_start_date'] = $row['plan_start_date'];
+                $tempRow['plan_end_date'] = $row['plan_end_date'];
+                $tempRow['remaining_days'] = $row['remaining_days'];
+                $tempRow['working_experience'] = $row['working_experience'];
+                $tempRow['register_date'] = $row['register_date'];
+                $tempRow['register_time'] = $row['register_time'];
+                if($row['status']==0)
+                $tempRow['status'] ="<label class='label label-default'>Deactive</label>";
+            elseif($row['status']==1)
+                $tempRow['status']="<label class='label label-success'>Active</label>";        
+            else
+                $tempRow['status']="<label class='label label-danger'>Blocked</label>";
+            if($row['chat']==1)
+                $tempRow['chat'] ="<p class='text text-success'>Enabled</p>";
+            else
+                $tempRow['chat']="<p class='text text-danger'>Disabled</p>";
+        
+                
+                $tempRow['operate'] = $operate;
+        
+                $rows[] = $tempRow;
+            }
+            $bulkData['rows'] = $rows;
+            print_r(json_encode($bulkData));
+        }
+
+if (isset($_GET['table']) && $_GET['table'] == 'not-completed') {
+    $offset = 0;
+    $limit = 10;
+    $where = '';
+    $sort = 'id';
+    $order = 'DESC';
+
+    if (isset($_GET['offset']))
+        $offset = $db->escapeString($fn->xss_clean($_GET['offset']));
+    if (isset($_GET['limit']))
+        $limit = $db->escapeString($fn->xss_clean($_GET['limit']));
+
+    if (isset($_GET['sort']))
+        $sort = $db->escapeString($fn->xss_clean($_GET['sort']));
+    if (isset($_GET['order']))
+        $order = $db->escapeString($fn->xss_clean($_GET['order']));
+
+        if (isset($_GET['search']) && !empty($_GET['search'])) {
+            $search = $db->escapeString($fn->xss_clean($_GET['search']));
+            $where = "WHERE u.name LIKE '%" . $search . "%' OR u.mobile LIKE '%" . $search . "%' OR u.email LIKE '%" . $search . "%' OR u.password LIKE '%" . $search . "%' OR u.skills LIKE '%" . $search . "%' OR u.place LIKE '%" . $search . "%'";
+        } 
+        
+         
+      $paymentOptionDisabled =true; 
+      if ($paymentOptionDisabled) {
+        $where .= ($where ? " AND " : " WHERE ") . "u.payment_status = 'not-completed'";
+        }
+
+        
+        $sql = "SELECT COUNT(`id`) as total FROM `users` u " . $where;
+        $db->sql($sql);
+        $res = $db->getResult();
+        foreach ($res as $row) {
+            $total = $row['total'];
+        }
+        
+        $sql = "SELECT * FROM users u " . $where . " ORDER BY " . $sort . " " . $order . " LIMIT " . $offset . "," . $limit;
+        $db->sql($sql);
+        $res = $db->getResult();
+        $bulkData = array();
+
+        $bulkData['total'] = $total;
+        $rows = array();
+        $tempRow = array();
+        foreach ($res as $row) {
+        $operate = '<a href="edit-user.php?id=' . $row['id'] . '" class="text text-primary"><i class="fa fa-edit"></i>Edit</a>';
+        $operate .= ' <a class="text text-danger" href="delete-user.php?id=' . $row['id'] . '"><i class="fa fa-trash"></i>Delete</a>';
+        $tempRow['id'] = $row['id'];
+        $tempRow['name'] = $row['name'];
+        $tempRow['mobile'] = $row['mobile'];
+        $tempRow['password'] = $row['password'];
+        $tempRow['email'] = $row['email'];
+        $tempRow['place'] = $row['place'];
+        $tempRow['skills'] = $row['skills'];
+        $tempRow['plan_start_date'] = $row['plan_start_date'];
+        $tempRow['plan_end_date'] = $row['plan_end_date'];
+        $tempRow['remaining_days'] = $row['remaining_days'];
+        $tempRow['working_experience'] = $row['working_experience'];
+        $tempRow['register_date'] = $row['register_date'];
+        $tempRow['register_time'] = $row['register_time'];
+        if($row['status']==0)
+        $tempRow['status'] ="<label class='label label-default'>Deactive</label>";
+    elseif($row['status']==1)
+        $tempRow['status']="<label class='label label-success'>Active</label>";        
+    else
+        $tempRow['status']="<label class='label label-danger'>Blocked</label>";
+    if($row['chat']==1)
+        $tempRow['chat'] ="<p class='text text-success'>Enabled</p>";
+    else
+        $tempRow['chat']="<p class='text text-danger'>Disabled</p>";
+
+        
+        $tempRow['operate'] = $operate;
+
+        $rows[] = $tempRow;
+    }
+    $bulkData['rows'] = $rows;
+    print_r(json_encode($bulkData));
+}

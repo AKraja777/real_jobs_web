@@ -201,10 +201,16 @@ $fn = new custom_functions;
                     </a>
                 </li>
                 <li class="treeview">
-                    <a href="payments.php">
-                    <i class="fa fa-money"></i>
-                        <span>payments</span>
+                    <a href="">
+                        <i class="fa fa-credit-card"></i>
+                        <span>Payments</span>
+                        <i class="fa fa-angle-right pull-right"></i>
                     </a>
+                    <ul class="treeview-menu">
+                        <li><a href="payments.php"><i class="fa fa-credit-card"></i>Payments</a></li>
+                        <li><a href="completed.php"><i class="fa fa-money"></i>completed</a></li>
+                        <li><a href="not-completed.php"><i class="fa fa-arrow-right"></i>Not completed</a></li>
+                    </ul>
                 </li>
              
             </section>
