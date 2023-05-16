@@ -34,6 +34,8 @@
                                     <th data-field="working_experience" data-sortable="true">Working Experience</th>
                                     <th data-field="status" data-sortable="true">Status</th>
                                     <th data-field="chat" data-sortable="true">chat</th>
+                                    <th data-field="register_date" data-sortable="true">Register Date</th>
+                                    <th data-field="register_time" data-sortable="true">Register Time</th>
                                     <th data-field="plan_start_date" data-sortable="true">Plan Start Date</th>
                                     <th data-field="plan_end_date" data-sortable="true">Plan End Date</th>
                                     <th data-field="remaining_days" data-sortable="true">remaining_days</th>

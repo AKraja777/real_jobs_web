@@ -58,7 +58,7 @@ if (isset($_POST['btnAdd'])) {
             $error['add_users'] = " <span class='label label-danger'>users Already Added</span>";
             
         }else{
-            $sql_query = "INSERT INTO users (name,mobile,email,password,place,skills,working_experience)VALUES('$name','$mobile','$email','$password','$place','$skills','$working_experience')";
+            $sql_query = "INSERT INTO users (name, mobile, email, password, place, skills, working_experience, register_date, register_time) VALUES ('$name', '$mobile', '$email', '$password', '$place', '$skills', '$working_experience', NOW(), NOW())";
             $db->sql($sql_query);
             $result = $db->getResult();
         }

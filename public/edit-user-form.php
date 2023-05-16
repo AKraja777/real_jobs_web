@@ -28,9 +28,9 @@ if (isset($_POST['btnEdit'])) {
             $error = array();
 
        if (!empty($name) && !empty($mobile) && !empty($email)) {
-        $sql_query = "UPDATE users SET name='$name', mobile='$mobile', email='$email', status='$status', chat='$chat', password='$password', place='$place', skills='$skills', working_experience='$working_experience', payment_status='$payment_status', plan_start_date=CURDATE(), plan_end_date=DATE_ADD(CURDATE(), INTERVAL 30 DAY),remaining_days = GREATEST(DATEDIFF(DATE_ADD(CURDATE(), INTERVAL 30 DAY), CURDATE()) - 1, 0) WHERE id = $ID";
-       $db->sql($sql_query);
-        $update_result = $db->getResult();
+        $sql_query = "UPDATE users SET name='$name', mobile='$mobile', email='$email', status='$status', chat='$chat', password='$password', place='$place', skills='$skills', working_experience='$working_experience', payment_status='$payment_status', plan_start_date=CURDATE(), plan_end_date=DATE_ADD(CURDATE(), INTERVAL 30 DAY),remaining_days = GREATEST(DATEDIFF(plan_end_date, CURDATE()) - 1, 0)  WHERE id = $ID";
+        $db->sql($sql_query);
+       $update_result = $db->getResult();
         if (!empty($update_result)) {
             $update_result = 0;
         } else {
