@@ -20,12 +20,11 @@ if (isset($_POST['btnEdit'])) {
     
    
     if (!empty($_FILES['image']['name'])) {
-        
-        $upload_dir = "../upload/buses/";
+    
+        $upload_dir = "upload/image/";
         $file_name = time() . "_" . basename($_FILES['image']['name']);
         $target_file = $upload_dir . $file_name;
-
-       
+    
         if (move_uploaded_file($_FILES['image']['tmp_name'], $target_file)) {
 
             $sql_query = "UPDATE fake_jobs SET title='$title', image='$file_name' WHERE id = $ID";
@@ -113,13 +112,17 @@ if (isset($_POST['btnCancel'])) { ?>
                                 <div class="form-group col-md-4">
                                   <div class="form-group">
                                 <label for="">Image</label>
+                               <input type="file" class="form-control" accept="image/png, image/jpeg"  name="image">
                                    <?php
                                 if (!empty($res[0]['image'])) {
-                                  $image_url = DOMAIN_URL . 'upload/buses/' . $res[0]['image'];
+                                  $image_url = DOMAIN_URL . 'upload/image/' . $res[0]['image'];
                                   echo '<p class="help-block"><img src="' . $image_url . '" style="max-width:100%" /></p>';
                                     }
                                       ?>
                             </div>
+                       
+                       </div>
+                     </div>
                        </div>
 
                             
